@@ -22,15 +22,15 @@ ref getNode(int k)
 	p->next = NULL;
 }
 
-void addFirst(ref &head, ref &tail, int k)
+void addFirst(ref *head, ref *tail, int k)
 {
 	ref p = getNode(k);
-	if (head == NULL)
-		head = tail = p;
+	if (*head == NULL)
+		*head = *tail = p;
 	else
 	{
-		p->next = head;
-		head = p;
+		p->next = *head;
+		*head = p;
 	}
 }
 void printlist(ref head)
@@ -46,6 +46,16 @@ void printlist(ref head)
 			printf("%d\n", p->key);
 	}
 }
+void destroylist(ref &head)
+{
+	ref p;
+	while (head)
+	{
+		p = head;
+		head = head->next;
+		free(p);
+	}
+}
 int main()
 {
 	int k;
@@ -57,9 +67,10 @@ int main()
 		scanf("%d", &k);
 		if (k == 0)
 			break;
-		addFirst(head, tail, k);
+		addFirst(&head, &tail, k);
 	}
 	printlist(head);
+	destroylist(head);	
 	getchar();
 	return 0;
 }
